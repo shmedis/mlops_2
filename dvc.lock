@@ -65,3 +65,43 @@ stages:
     params:
       params.yaml:
         split.split_ratio: 0.3
+  train:
+    cmd: python3 scripts/model_scripts/dt.py data/stage4/train.csv model.pkl
+    deps:
+    - path: data/stage4/train.csv
+      hash: md5
+      md5: a2a747d4ac67b94bdf440d1832e5eeb0
+      size: 292205
+    - path: scripts/model_scripts/dt.py
+      hash: md5
+      md5: d9780a3408d111b35701ce046f98a716
+      size: 723
+    params:
+      params.yaml:
+        train.max_depth: 4
+        train.seed: 42
+    outs:
+    - path: models/model.pkl
+      hash: md5
+      md5: 8978af9073dae26cbaca5cad8447e57c
+      size: 6830
+  evaluate:
+    cmd: python3 scripts/model_scripts/evaluate.py data/stage4/test.csv models/model.pkl
+    deps:
+    - path: data/stage4/test.csv
+      hash: md5
+      md5: a22dcbe0f9db1af401e82aa3418b71c0
+      size: 125169
+    - path: models/model.pkl
+      hash: md5
+      md5: 8978af9073dae26cbaca5cad8447e57c
+      size: 6830
+    - path: scripts/model_scripts/evaluate.py
+      hash: md5
+      md5: 80d0e3e650f1e2ae1d0b757e4152adaa
+      size: 564
+    outs:
+    - path: evaluate/score.json
+      hash: md5
+      md5: 1cbf1138890531bbf8921f7829af7dc5
+      size: 30
